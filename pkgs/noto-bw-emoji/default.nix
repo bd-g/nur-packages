@@ -1,4 +1,4 @@
-{ lib, stdenvNoCC, pkgs }:
+{ lib, stdenv, pkgs }:
 let
   pname = "noto-bw-emoji";
   version = "v39";
@@ -6,9 +6,8 @@ let
   regular-url = "http://fonts.gstatic.com/s/notoemoji/v39/bMrnmSyK7YY-MEu6aWjPDs-ar6uWaGWuob-r0jwvS-FGJCMY.ttf";
   regular-hash = "Zfwh9q2GrL5Dwp+J/8Ddd2IXCaUXpQ7dE3CqgCMMyPs=";
 in
-stdenvNoCC.mkDerivation {
-  pname = "noto-bw-emoji";
-  inherit version font-family-name;
+stdenv.mkDerivation {
+  inherit pname version font-family-name;
 
   src = pkgs.fetchurl {
     url = regular-url;
@@ -19,8 +18,6 @@ stdenvNoCC.mkDerivation {
   passthru = {
     updateScript = ./update.sh;
   };
-
-  enableParallelBuilding = true;
 
   installPhase = ''
     runHook preInstall
