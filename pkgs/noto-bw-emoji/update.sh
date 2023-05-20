@@ -45,6 +45,7 @@ exit 0
 
 sed -i "$dir/default.nix" \
 	-e 's,version = ".*",version = "'"$latest_version"'",' \
-	-e '/^  src = fetchurl/,+4{;s/sha256 = "\(.*\)"/sha256 = "'"$sha256_hash"'"/}'
+	-e 's,regular-url = ".*",regular-url = "'"$noto_emoji_regular_url"'",' \
+	-e 's,regular-hash = ".*",regular-hash = "'"$sha256_hash"'",'
 
 nix-build -A noto-fonts-bw-emoji

@@ -1,17 +1,20 @@
-{ lib, stdenvNoCC }:
+{ lib, stdenvNoCC, pkgs }:
 let
   pname = "noto-fonts-bw-emoji";
   version = "v39";
   font-family-name = "Noto Emoji";
+  regular-url = "http://fonts.gstatic.com/s/notoemoji/v39/bMrnmSyK7YY-MEu6aWjPDs-ar6uWaGWuob-r0jwvS-FGJCMY.ttf";
+  regular-hash = "Zfwh9q2GrL5Dwp+J/8Ddd2IXCaUXpQ7dE3CqgCMMyPs=";
 in
 stdenvNoCC.mkDerivation {
   pname = "noto-fonts-bw-emoji";
   inherit version font-family-name;
 
-  src = fetchurl {
-    src = "http://fonts.gstatic.com/s/notoemoji/v39/bMrnmSyK7YY-MEu6aWjPDs-ar6uWaGWuob-r0jwvS-FGJCMY.ttf";
-    sha256 = "65fc21f6ad86acbe43c29f89ffc0dd77621709a517a50edd1370aa80230cc8fb";
+  src = pkgs.fetchurl {
+    url = regular-url;
+    sha256 = regular-hash;
   };
+  dontUnpack = true;
 
   passthru = {
     updateScript = ./update.sh;
@@ -22,12 +25,12 @@ stdenvNoCC.mkDerivation {
   installPhase = ''
     runHook preInstall
     mkdir -p $out/share/fonts/noto
-    cp *.ttf $out/share/fonts/noto
+    cp $src $out/share/fonts/noto/NotoEmoji.ttf
     runHook postInstall
   '';
 
   meta = with lib; {
-    description = "Black-and-White emoji fonts";
+    description = "Black-and-White Noto emoji fonts from google";
     homepage = "https://fonts.google.com/noto/specimen/Noto+Emoji";
     license = with licenses; [ asl20 ];
     platforms = platforms.all;
