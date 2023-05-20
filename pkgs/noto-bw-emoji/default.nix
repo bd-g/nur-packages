@@ -1,13 +1,13 @@
 { lib, stdenvNoCC, pkgs }:
 let
-  pname = "noto-fonts-bw-emoji";
+  pname = "noto-bw-emoji";
   version = "v39";
   font-family-name = "Noto Emoji";
   regular-url = "http://fonts.gstatic.com/s/notoemoji/v39/bMrnmSyK7YY-MEu6aWjPDs-ar6uWaGWuob-r0jwvS-FGJCMY.ttf";
   regular-hash = "Zfwh9q2GrL5Dwp+J/8Ddd2IXCaUXpQ7dE3CqgCMMyPs=";
 in
 stdenvNoCC.mkDerivation {
-  pname = "noto-fonts-bw-emoji";
+  pname = "noto-bw-emoji";
   inherit version font-family-name;
 
   src = pkgs.fetchurl {
