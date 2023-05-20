@@ -1,12 +1,6 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash -p jq
 
-# * Add correct `name`/`version` field to `package.json`, otherwise `yarn2nix` fails to
-#   find required dependencies.
-# * Adjust `file:`-dependencies a bit for the structure inside a Nix build.
-# * Update hashes for the tarball & the fixed-output drv with all `mix`-dependencies.
-# * Generate `yarn.lock` & `yarn.nix` in a temporary directory.
-
 set -euxo pipefail
 
 API_KEY='${{ secrets.GOOGLE_FONT_API_KEY }}'
@@ -38,12 +32,9 @@ curl -o "$temp_dir/$filename" "$noto_emoji_regular_url"
 
 # Calculate the SHA256 hash
 sha256sum_output=$(sha256sum "$temp_dir/$filename")
-sha256_hash=$(echo "$sha256sum_output" | awk '{ print $1 }')
+sha256_hash=$(echo "$sha256sum_output" | awk '{ print $1 }' | xxd -r -p | base64)
 
-echo $sha256_hash
-exit 0
-
-sed -i "$dir/default.nix" \
+sed -i "./default.nix" \
 	-e 's,version = ".*",version = "'"$latest_version"'",' \
 	-e 's,regular-url = ".*",regular-url = "'"$noto_emoji_regular_url"'",' \
 	-e 's,regular-hash = ".*",regular-hash = "'"$sha256_hash"'",'
